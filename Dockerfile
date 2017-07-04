@@ -108,3 +108,10 @@ RUN \
 	apk del build-deps && \
 	rm -rf /var/cache/apk/*
 
+# prepare dir
+RUN mkdir /source
+
+VOLUME ["/source"]
+WORKDIR /source
+CMD ["sh"]
+
