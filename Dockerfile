@@ -105,8 +105,8 @@ RUN \
 	rm -rf ${DIR} && \
 
 	# Cleaning up
-	apk del build-deps && \
-	rm -rf /var/cache/apk/*
+	# apk del build-deps && \
+	# rm -rf /var/cache/apk/*
 
 # prepare dir
 RUN mkdir /source
