@@ -1,9 +1,9 @@
 # vim:set ft=dockerfile:
 
-FROM docker.io/python:3-alpine
+FROM alpine
 MAINTAINER Ondrej Barta <ondrej@ondrej.it>
 
-## 添加源 更新 系统
+## add source 
 RUN \
 	echo http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories && \
 
@@ -52,7 +52,6 @@ RUN \
 	clang-dev \
 	clang \
 	linux-headers \
-	git \
 	curl && \
 
 	export SRC=/usr \
@@ -73,14 +72,6 @@ RUN \
 	hash -r && \
 	cd /tmp && \
 	rm -rf ${DIR} && \
-
-	# Fix numpy
-	ln -s /usr/include/locale.h /usr/include/xlocale.h && \
-	pip install --no-cache-dir \
-	Cython==0.25.2 \
-	numpy==1.13.0rc2 \
-	Pillow==4.2.0 \
-	av==0.3.3 && \
 
 	# OpenCV
 	export OPENCV_VERSION=3.2.0 \
@@ -108,4 +99,4 @@ RUN \
 	# Cleaning up
 	rm -rf /var/cache/apk/*
 
-
+	
