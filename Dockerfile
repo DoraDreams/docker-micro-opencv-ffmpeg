@@ -3,6 +3,7 @@
 FROM docker.io/python:3-alpine
 MAINTAINER Ondrej Barta <ondrej@ondrej.it>
 
+## 添加源 更新 系统
 RUN \
 	echo http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories && \
 
@@ -105,13 +106,6 @@ RUN \
 	rm -rf ${DIR} && \
 
 	# Cleaning up
-	# apk del build-deps && \
-	# rm -rf /var/cache/apk/*
+	rm -rf /var/cache/apk/*
 
-# prepare dir
-RUN mkdir /source
-
-VOLUME ["/source"]
-WORKDIR /source
-CMD ["sh"]
 
