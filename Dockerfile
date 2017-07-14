@@ -86,13 +86,9 @@ RUN \
 	mkdir build && \
 	cd build && \
 	cmake -D CMAKE_BUILD_TYPE=RELEASE \
-	-D INSTALL_C_EXAMPLES=OFF \
-	-D INSTALL_PYTHON_EXAMPLES=OFF \
 	-D CMAKE_INSTALL_PREFIX=/usr/local \
-	-D BUILD_EXAMPLES=OFF .. && \
 	make -j4 && \
 	make install && \
-	cp ${DIR}/opencv-${OPENCV_VERSION}/build/lib/python3/cv2.cpython-36m-x86_64-linux-gnu.so /usr/local/lib/python3.6/cv2.so && \
 	cd /tmp && \
 	rm -rf ${DIR} && \
 
