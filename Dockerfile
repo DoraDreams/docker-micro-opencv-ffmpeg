@@ -51,6 +51,7 @@ RUN \
 	libjasper \
 	clang-dev \
 	clang \
+	boost \
 	linux-headers \
 	curl && \
 
@@ -88,6 +89,17 @@ RUN \
 	cmake -D CMAKE_BUILD_TYPE=RELEASE \
 	-D CMAKE_INSTALL_PREFIX=/usr/local \
 	make -j4 && \
+	make install && \
+	cd /tmp && \
+	rm -rf ${DIR} && \
+	
+	# REST Client cpp
+	DIR=$(mktemp -d) && cd ${DIR} && \
+	curl -sSL -Os https://codeload.github.com/DoraDreams/restclient-cpp/zip/master && \
+	unzip restclient-cpp-master.zip && \
+	cd restclient-cpp-master.zip && \
+	./autogen.sh && \
+	./configure && \
 	make install && \
 	cd /tmp && \
 	rm -rf ${DIR} && \
