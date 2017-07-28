@@ -1,11 +1,12 @@
 # vim:set ft=dockerfile:
 
 FROM docker.io/python:3-alpine
-MAINTAINER Ondrej Barta <ondrej@ondrej.it>
+MAINTAINER Chao Hu <chao@ngs.tech>
 
 RUN \
 	echo http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories && \
 
+    # Install libraries
 	apk update && \
 	apk add \
 	tzdata \
@@ -21,11 +22,8 @@ RUN \
 	opus \
 	lame \
 	fdk-aac \
-	boost-dev \
-	automake \
-	autoconf \
+    	curl \
 	libtool \
-	git \
 	freetype && \
 
 	# Install build tools
@@ -56,9 +54,9 @@ RUN \
 	clang-dev \
 	clang \
 	linux-headers \
-	boost \
-	git \
-	curl && \
+    automake \
+	autoconf \
+	git && \
 
 	export SRC=/usr \
 	export FFMPEG_VERSION=3.3.2 \
@@ -110,7 +108,37 @@ RUN \
 	cd /tmp && \
 	rm -rf ${DIR} && \
 
+    	# Curl library
+   	DIR=$(mktemp -d) && cd ${DIR} && \
+	git clone https://github.com/curl/curl.git && \
+	cd curl && \
+	./buildconf && \
+	./configure --prefix=/usr --with-ssl --enable-ipv6 --enable-unix-sockets --without-libidn --disable-static --disable-ldap --with-pic  && \
+	make && \
+	make install && \
+	rm -rf ${DIR} && \
+
+    	# RESTClient cpp library
+    	DIR=$(mktemp -d) && cd ${DIR} && \
+	git clone https://github.com/mrtazz/restclient-cpp.git && \
+	cd restclient-cpp && \
+	./autogen.sh && \
+	./configure && \
+	make && \
+	make install && \
+	rm -rf ${DIR} && \
+
+	# Install boost library
+	DIR=$(mktemp -d) && cd ${DIR} && \
+	curl -sSL -Os https://nchc.dl.sourceforge.net/project/boost/boost/1.63.0/boost_1_63_0.tar.bz2 && \
+	bzip2 -d boost_1_63_0.tar.bz2 && \
+	tar -xvf boost_1_63_0.tar && \
+	cd boost_1_63_0 && \
+	./bootstrap.sh && \
+	./b2 install && \
+	rm -rf ${DIR} && \
+
 	# Cleaning up
-	# apk del build-deps && \
+	apk del build-deps && \
 	rm -rf /var/cache/apk/*
 
