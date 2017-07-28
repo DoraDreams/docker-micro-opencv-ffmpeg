@@ -21,6 +21,11 @@ RUN \
 	opus \
 	lame \
 	fdk-aac \
+	boost-dev \
+	automake \
+	autoconf \
+	libtool \
+	git \
 	freetype && \
 
 	# Install build tools
