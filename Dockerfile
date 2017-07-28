@@ -1,9 +1,8 @@
 # vim:set ft=dockerfile:
 
-FROM alpine
+FROM docker.io/python:3-alpine
 MAINTAINER Ondrej Barta <ondrej@ondrej.it>
 
-## add source 
 RUN \
 	echo http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories && \
 
@@ -51,8 +50,9 @@ RUN \
 	libjasper \
 	clang-dev \
 	clang \
-	boost \
 	linux-headers \
+	boost \
+	git \
 	curl && \
 
 	export SRC=/usr \
@@ -74,6 +74,14 @@ RUN \
 	cd /tmp && \
 	rm -rf ${DIR} && \
 
+	# Fix numpy
+	ln -s /usr/include/locale.h /usr/include/xlocale.h && \
+	pip install --no-cache-dir \
+	Cython==0.25.2 \
+	numpy==1.13.1 \
+	Pillow==4.2.1 \
+	av==0.3.3 && \
+
 	# OpenCV
 	export OPENCV_VERSION=3.2.0 \
 
@@ -87,19 +95,17 @@ RUN \
 	mkdir build && \
 	cd build && \
 	cmake -D CMAKE_BUILD_TYPE=RELEASE \
+	-D INSTALL_C_EXAMPLES=OFF \
+	-D INSTALL_PYTHON_EXAMPLES=OFF \
 	-D CMAKE_INSTALL_PREFIX=/usr/local \
+	-D BUILD_EXAMPLES=OFF .. && \
 	make -j4 && \
 	make install && \
+	cp ${DIR}/opencv-${OPENCV_VERSION}/build/lib/python3/cv2.cpython-36m-x86_64-linux-gnu.so /usr/local/lib/python3.6/cv2.so && \
 	cd /tmp && \
-	rm -rf ${DIR} && \
-	
-	# REST Client cpp
-	DIR=$(mktemp -d) && cd ${DIR} && \
-	curl -sSL -Os https://codeload.github.com/DoraDreams/restclient-cpp/zip/master && \
-	unzip restclient-cpp-master.zip && \
 	rm -rf ${DIR} && \
 
 	# Cleaning up
+	# apk del build-deps && \
 	rm -rf /var/cache/apk/*
 
-	
