@@ -108,37 +108,7 @@ RUN \
 	cd /tmp && \
 	rm -rf ${DIR} && \
 
-    	# Curl library
-   	DIR=$(mktemp -d) && cd ${DIR} && \
-	git clone https://github.com/curl/curl.git && \
-	cd curl && \
-	./buildconf && \
-	./configure --prefix=/usr --with-ssl --enable-ipv6 --enable-unix-sockets --without-libidn --disable-static --disable-ldap --with-pic  && \
-	make && \
-	make install && \
-	rm -rf ${DIR} && \
-
-    	# RESTClient cpp library
-    	DIR=$(mktemp -d) && cd ${DIR} && \
-	git clone https://github.com/mrtazz/restclient-cpp.git && \
-	cd restclient-cpp && \
-	sh ./autogen.sh && \
-	./configure && \
-	make && \
-	make install && \
-	rm -rf ${DIR} && \
-
-	# Install boost library
-	DIR=$(mktemp -d) && cd ${DIR} && \
-	curl -sSL -Os https://nchc.dl.sourceforge.net/project/boost/boost/1.63.0/boost_1_63_0.tar.bz2 && \
-	bzip2 -d boost_1_63_0.tar.bz2 && \
-	tar -xvf boost_1_63_0.tar && \
-	cd boost_1_63_0 && \
-	sh ./bootstrap.sh && \
-	./b2 install && \
-	rm -rf ${DIR} && \
-
 	# Cleaning up
-	apk del build-deps && \
+	## apk del build-deps && \
 	rm -rf /var/cache/apk/*
 
