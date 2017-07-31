@@ -54,7 +54,7 @@ RUN \
 	clang-dev \
 	clang \
 	linux-headers \
-    automake \
+    	automake \
 	autoconf \
 	git && \
 
@@ -122,7 +122,7 @@ RUN \
     	DIR=$(mktemp -d) && cd ${DIR} && \
 	git clone https://github.com/mrtazz/restclient-cpp.git && \
 	cd restclient-cpp && \
-	./autogen.sh && \
+	sh ./autogen.sh && \
 	./configure && \
 	make && \
 	make install && \
@@ -134,7 +134,7 @@ RUN \
 	bzip2 -d boost_1_63_0.tar.bz2 && \
 	tar -xvf boost_1_63_0.tar && \
 	cd boost_1_63_0 && \
-	./bootstrap.sh && \
+	sh ./bootstrap.sh && \
 	./b2 install && \
 	rm -rf ${DIR} && \
 
