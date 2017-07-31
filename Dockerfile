@@ -24,6 +24,7 @@ RUN \
 	fdk-aac \
     	curl \
 	libtool \
+	boost-dev \
 	freetype && \
 
 	# Install build tools
